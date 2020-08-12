@@ -20,7 +20,7 @@
 					<h3 class="card-label">{{trans('categories.view.search_category')}}</h3>
 				</div>
 			</div>
-			<div class="card-body">				
+			<div class="card-body">
 				<form action="">
 					<div class="row">
 						<div class="col-6">
@@ -70,7 +70,7 @@
 					</a>
 				</div>
 			</div>
-			<div class="card-body">				
+			<div class="card-body">
 				<table class="table">
 				    <thead class="thead-dark">
 				        <tr>
@@ -81,7 +81,14 @@
 						</tr>
 				    </thead>
 				    <tbody>
-				    	<?php $count = 1 ?>
+				    	<?php
+                            $count = 1;
+                            if(app('request')->input('page') == null || app('request')->input('page') == 1) {
+                                $count = 1;
+                            } else {
+                                $count = ((app('request')->input('page') * 10)) - 9;
+                            }
+				    	?>
 				        @foreach( $categories as $category )
 				        	<tr>
 				        		<td>{{$count++}}</td>
@@ -92,7 +99,7 @@
 				        			<a class="btn btn-danger remove-category" data-id="{{$category->id}}"><i class="fa fa-trash"></i></a>
 				        		</td>
 				        	</tr>
-						@endforeach				       				    	
+						@endforeach
 				    </tbody>
 				</table>
 				<div class="com-md-12 text-right">

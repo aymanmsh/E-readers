@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+
+class LoginController extends Controller
+{
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = 'control/dashboard';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
+    public function attemptLogin(Request $request) {
+        if(\Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $request->filled('remember'))) {
+            return true;
+        } elseif(\Auth::guard('library')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $request->filled('remember'))) {
+            return true;
+        } elseif(\Auth::guard('user')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $request->filled('remember'))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function logout() {
+        if(\Auth::check()) {
+            \Auth::logout();
+        } elseif(\Auth::guard('library')->check()) {
+            \Auth::guard('library')->logout();
+        }elseif(\Auth::guard('user')->check()) {
+            \Auth::guard('user')->logout();
+        }
+        return redirect()->route('login');
+    }
+}

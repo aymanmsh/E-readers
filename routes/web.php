@@ -56,3 +56,9 @@ Route::group(['prefix' => 'book'], function() {
 
 
 Route::get('local/{lang?}', ['as' => 'local.change', 'uses' => 'LocalizationController@change']);
+
+Auth::routes();
+
+Route::get('/control/dashboard', 'control\DashboardController@index')->name('dashboard');
+Route::get('/logout', 'Auth\LoginController@logout');
+

@@ -76,7 +76,7 @@ class CategoryController extends Controller
         $category->save();
         return redirect()->back()->with('success', trans('categories.controller.added_successfully'));
 
-        
+
     }
 
     /**
@@ -122,7 +122,7 @@ class CategoryController extends Controller
             // Update Image If IT Is Exist
             $category->fill($request->all());
             if($request->hasFile('image')) {
-                $image_path = parent::uploadImage($request->file('image'), 'category');                
+                $image_path = parent::uploadImage($request->file('image'), 'category');
                 if(\File::exists(public_path($category->image))) {
                     \File::delete((public_path($category->image)));
                 }
@@ -182,7 +182,7 @@ class CategoryController extends Controller
             $rules['image'] = 'required|mimes:jpg,jpeg,png';
         }
         return $rules;
-        
+
     }
 
     // Validation Messages For Form
