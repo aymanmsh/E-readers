@@ -51,6 +51,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        dd($exception);
         if($request->isJson())
             return Controller::error('Some Thing Went Wrong!!');
         return parent::render($request, $exception);

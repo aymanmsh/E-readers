@@ -27,9 +27,9 @@ Route::group(['prefix' => 'user'], function() {
 });
 
 Route::group(['prefix' => 'category'], function() {
-    Route::get('', ['as' => 'user.index', 'uses' => 'control\API\CategoryController@index']);
-    Route::get('{id}', ['as' => 'user.show', 'uses' => 'control\API\CategoryController@show']);
-    Route::post('create', ['as' => 'user.store', 'uses' => 'control\API\CategoryController@store']);
-    Route::match(['put', 'patch'], 'update/{id}', ['as' => 'user.store', 'uses' => 'control\API\CategoryController@update']);
-    Route::delete('delete/{id}', ['as' => 'user.delete', 'uses' => 'control\API\CategoryController@destroy']);
+    Route::get('', ['as' => 'category.index', 'uses' => 'control\API\CategoryController@index']);
+    Route::get('{id}', ['as' => 'category.show', 'uses' => 'control\API\CategoryController@show']);
+    Route::post('create', ['as' => 'category.store', 'uses' => 'control\API\CategoryController@store']);
+    Route::match(['put', 'patch'], 'update/{id}', ['as' => 'category.store', 'uses' => 'control\API\CategoryController@update']);
+    Route::delete('delete/{id}', ['as' => 'category.delete', 'uses' => 'control\API\CategoryController@destroy']);
 });

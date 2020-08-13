@@ -25,7 +25,7 @@ class CategoryController extends Controller
 
 
     public function store(Request $request) {
-        $validation = \Validator::make($request->all(), $this->rules());
+        $validation = \Validator::make($request->all(), $this->rules(), $this->messages());
         if($validation->fails()) {
             return parent::error($validation->errors(), 400);
         }
@@ -37,7 +37,7 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $validation = \Validator::make($request->all(), $this->rules($id));
+        $validation = \Validator::make($request->all(), $this->rules($id), $this->messages());
         if($validation->fails())
         return parent::error($validation->errors());
 
@@ -72,7 +72,29 @@ class CategoryController extends Controller
 
 
     private function rules($id = null) {
-        $rules = [];
+        $rules = [
+            'lang' => 'required|in:en,ar',
+        ];
+        if($id) {
+            $rules['name'] = 'min:3|unique:categories,name,' . $id;
+            $rules['image'] = 'mimes:jpg,jpeg,png';
+        } else {
+            $rules['name'] = 'required|min:3|unique:categories,name,' . $id;
+            $rules['image'] = 'required|mimes:jpg,jpeg,png';
+        }
         return $rules;
+    }
+
+    // Validation Messages For Form
+    private function messages() {
+        return [
+            'name.required' => trans('categories.controller.name_required'),
+            'name.min' => trans('categories.controller.name_short'),
+            'name.unique' => trans('categories.controller.name_used'),
+            'lang.required' => trans('categories.controller.language_required'),
+            'lang.in' =>  trans('categories.controller.language_invalid'),
+            'image.required' =>  trans('categories.controller.image_required'),
+            'image.mimes' => trans('categories.controller.image_invalid'),
+        ];
     }
 }
