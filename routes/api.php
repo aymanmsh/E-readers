@@ -33,3 +33,11 @@ Route::group(['prefix' => 'category'], function() {
     Route::match(['put', 'patch'], 'update/{id}', ['as' => 'category.store', 'uses' => 'control\API\CategoryController@update']);
     Route::delete('delete/{id}', ['as' => 'category.delete', 'uses' => 'control\API\CategoryController@destroy']);
 });
+
+Route::group(['prefix' => 'book'], function() {
+    Route::get('', ['as' => 'book.index', 'uses' => 'control\API\BookController@index']);
+    Route::get('{id}', ['as' => 'book.show', 'uses' => 'control\API\Bookontroller@show']);
+    Route::post('create', ['as' => 'book.store', 'uses' => 'control\API\BookController@store']);
+    Route::match(['put', 'patch'], 'update/{id}', ['as' => 'book.store', 'uses' => 'control\API\BookController@update']);
+    Route::delete('delete/{id}', ['as' => 'book.delete', 'uses' => 'control\API\BookyController@destroy']);
+});

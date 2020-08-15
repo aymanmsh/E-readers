@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\control\API;
 
-use App\control\Category;
+use App\control\Book;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class BookController extends Controller
 {
     public function index() {
-        $categories = Category::all();
+        $categories = Book::all();
         return parent::success($categories, 200);
     }
 
     public function show($id) {
         try {
-            $category = Category::findOrFail($id);
-            return parent::success($category);
+            $book = Book::findOrFail($id);
+            return parent::success($book);
         } catch (ModelNotFoundException $modelNotFoundException) {
-            return parent::error('Category Not Found!!', 404);
+            return parent::error('Book Not Found!!', 404);
         }
     }
 
@@ -29,12 +29,12 @@ class CategoryController extends Controller
         if($validation->fails()) {
             return parent::error($validation->errors(), 400);
         }
-        $category = new Category();
-        $category->fill($request->all());
-//        $category->image = parent::uploadImage($request->file('image'), 'category');
-        $category->image = "123.jpg";
-        $category->save();
-        return parent::success($category);
+        $book = new Book();
+        $book->fill($request->all());
+//        $book->image = parent::uploadImage($request->file('image'), 'book');
+        $book->image = "123.jpg";
+        $book->save();
+        return parent::success($book);
     }
 
     public function update(Request $request, $id) {
@@ -43,31 +43,31 @@ class CategoryController extends Controller
         return parent::error($validation->errors());
 
         try {
-            $category = Category::findOrFail($id);
+            $book = Book::findOrFail($id);
             $category->fill($request->all());
-            if($request->hasFile('image')) {
-                $image_path = parent::uploadImage($request->file('image'), 'category');
-                if (\File::exists(public_path($category->image))) {
-                    \File::delete((public_path($category->image)));
+            if($book->hasFile('image')) {
+                $image_path = parent::uploadImage($request->file('image'), '$book');
+                if (\File::exists(public_path($book->image))) {
+                    \File::delete((public_path($book->image)));
                 }
-                $category->image = $image_path;
+                $book->image = $image_path;
             }
-            $category->update();
-            return parent::success($category);
+            $book->update();
+            return parent::success($book);
         } catch(ModelNotFoundException $ModelNotFoundException) {
-            return parent::error('Category Not Found!!', 404);
+            return parent::error('Book Not Found!!', 404);
         }
     }
 
     public function destroy($id) {
         try{
-            $category = Category::findOrFail($id);
-            $result = $category->delete();
+            $book = Book::findOrFail($id);
+            $result = $book->delete();
             if($result === TRUE)
-                return parent::success($category);
+                return parent::success($book);
             return parent::error('Some Thing Went Wrong!!');
         } catch (ModelNotFoundException $modelNotFoundException) {
-            return parent::error('Category Not Found!!');
+            return parent::error('Book Not Found!!');
         }
     }
 
